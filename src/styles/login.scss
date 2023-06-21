@@ -1,0 +1,188 @@
+@keyframes clouds-to-right {
+  0% {
+   background-position-x: 132%;
+  }
+  100% {
+   background-position-x: -132%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(.8) ;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) ;
+  }
+}
+
+@keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: scale(1) ;
+    }
+    50% {
+      opacity: .2;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(10) ;
+    }
+  }
+
+.login {
+  // background-image: url("../../public/loginpage-background.avif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+
+  & * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    padding: 15px;
+    background-image: url("../../public/clouds.png");
+    background-size: cover;
+    animation: clouds-to-right 500s linear;
+    animation-iteration-count: infinite;
+    background-attachment: fixed;
+  }
+
+  &__box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin: auto;
+  }
+
+  &__form-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 999;
+    width: 100%;
+    padding: 30px 20px;
+    border: solid 1px rgba(255, 255, 255, .5);
+    border-radius: 16px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, .1),
+               -4px -4px 10px rgba(0, 0, 0, .1);
+    background-color: rgba(255, 255, 255, .1);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+
+    animation: fadeIn .3s ease-in forwards;
+  }
+
+  &__ic-account {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    border: solid 1px rgba(255, 255, 255, .5);
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, .2);
+    background-image: url("../../public/ic_account.svg");
+    background-position: center;
+    background-size: 40px;
+    background-repeat: no-repeat;
+  }
+
+  &__input {
+    width: 100%;
+    height: 50px;
+    margin: 10px auto;
+    padding: 15px 20px;
+    border: solid 1px rgba(255, 255, 255, .5);
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, .2);
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, .8);
+    }
+  }
+
+  &__error-message {
+    color: #700;
+    text-align: center;
+  }
+
+  &__btn {
+    width: 100%;
+    height: 50px;
+    margin: 20px auto 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: #fff;
+    color: #3d3935;
+    font-size: 1.25rem;
+    outline: none;
+    cursor: pointer;
+  }
+
+  &__text {
+    margin: 0;
+    padding: 0;
+    color: #fff;
+    font-size: 0.875rem;
+    text-align: center;
+
+    & a {
+      color: #fff;
+    }
+
+    &-register {
+      color: #005199;
+      cursor: pointer;
+
+      &:hover {
+        color: #2a679d;
+      }
+    }
+  }
+
+  &__btn:hover,
+  &__text a:hover {
+    opacity: .8;
+  }
+
+}
+
+.circle-01 {
+  position: absolute;
+  top: -45px;
+  right: -45px;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: linear-gradient(45deg, #ffd800, #ff5520);
+}
+.circle-02 {
+  position: absolute;
+  bottom: -45px;
+  left: -45px;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: linear-gradient(45deg, #0cbcf2, #750cf2);
+}

@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { TodoPage } from './pages/TodoPage';
+import { LoginPage } from './pages/LoginPage';
+import { Header } from './components/Header';
 
-function App() {
+export const App: React.FC = () => {
+  const [isSessionActive, setIsSessionActive] = useState(false);
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    if (token) {
+      setIsSessionActive(true);
+    } else {
+      setIsSessionActive(false);
+    }
+  }, []);
+
+  const handleActiveSession = (isActive: boolean) => {
+    setIsSessionActive(isActive);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {(isSessionActive && token)
+        ? <>
+          <Header handleActiveSession={handleActiveSession} />
+          <TodoPage />
+        </>
+        : <LoginPage handleActiveSession={handleActiveSession} />}
+    </>
   );
-}
-
-export default App;
+};
