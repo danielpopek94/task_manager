@@ -1,6 +1,22 @@
+![img](image.jpg)
+
 # Task Manager
 
-This is a simple Task Manager built using React. It allows users to manage their tasks efficiently.
+Simple Task Manager built using React. It allows users to manage their tasks efficiently.
+
+This is a frontend for a [Todo Server](https://github.com/danielpopek94/todos_backend/). It provides an API to manage todos with basic CRUD operations.
+
+
+## Technologies Used
+
+- React.js
+- Node.js
+- Express.js
+- MongoDB (Atlas)
+- JWT
+- Nodemon
+- Cors
+- Body Parser
 
 ## Getting Started
 
