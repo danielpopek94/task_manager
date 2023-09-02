@@ -1,6 +1,8 @@
-![img](image.jpg)
+[![img](image.jpg)](https://danielpopek94.github.io/task_manager/)
 
 # Task Manager
+
+[DEMO-LINK](https://danielpopek94.github.io/task_manager/)
 
 Simple Task Manager built using React. It allows users to manage their tasks efficiently.
 
