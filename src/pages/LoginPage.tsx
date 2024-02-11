@@ -9,8 +9,6 @@ interface Props {
   handleActiveSession: (value: boolean) => void;
 }
 
-
-
 export const LoginPage = ({ handleActiveSession }: Props) => {
   const [email, setEmail] = useState('admin@gmail.com');
   const [password, setPassword] = useState('coolpassword');
@@ -86,7 +84,6 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
     setRepeatedPassword('');
     setErrorType('');
     setRegister((prev) => !prev);
-
   };
 
   return (
@@ -136,6 +133,7 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
                     1 number and 1 special character
                   </p>}
               </div>
+
               {register
                 && <div className="login__input-container">
                   <input
@@ -154,7 +152,6 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
                   }
                 </div>
               }
-
 
               <div
                 className="loader"
