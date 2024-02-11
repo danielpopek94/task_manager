@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { handleLogin } from '../api/login';
 import { handleRegister } from '../api/register';
@@ -60,9 +61,7 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
   };
 
   return (
-    <div className="login"
-      style={{ backgroundImage: 'url(/loginpage-background.avif)' }}
-    >
+    <div className="login">
       <div className="login__container">
         <div className="login__box">
           <div className="login__form-box">
