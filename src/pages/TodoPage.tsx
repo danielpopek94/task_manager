@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 import {
   getTodos, addTodo, deleteTodos, updateTodos,
 } from '../api/todos';
 import ErrorMessage from '../components/ErrorMessage';
 import NewTodoInputField from '../components/NewTodoInputField';
 import TodosList from '../components/TodosList';
+import TodoItem from '../components/Todo';
 import FooterMenu from '../components/FooterMenu';
 
 import { TodoStatus } from '../types/TodoStatus';
 import { Todo } from '../types/TodoItem';
 import { Errors } from '../types/Errors';
-import TodoItem from '../components/Todo';
 
 export const TodoPage = () => {
   const [todosList, setTodosList] = useState<Todo[]>([]);

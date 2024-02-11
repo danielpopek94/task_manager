@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+
 import { TodoStatus } from '../types/TodoStatus';
 import { Todo } from '../types/TodoItem';
 
@@ -24,6 +26,22 @@ export default function FooterMenu({
     setItemsCompleted(completed);
     setItemsLeft(todosList.length - completed);
   }, [todosList]);
+
+  const localeHandleClearCompleted = () => {
+    confirmAlert({
+      title: 'You remove the todo',
+      message: `Number of items to be removed:(${itemsCompleted})`,
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => handleClearCompleted(),
+        },
+        {
+          label: 'No',
+        },
+      ],
+    });
+  };
 
   return (
     <footer className="todoapp__footer">
@@ -64,7 +82,7 @@ export default function FooterMenu({
       <button
         type="button"
         className="todoapp__clear-completed"
-        onClick={() => handleClearCompleted()}
+        onClick={() => localeHandleClearCompleted()}
         disabled={itemsCompleted === 0}
       >
         Clear completed

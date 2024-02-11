@@ -1,6 +1,8 @@
 import {
   KeyboardEvent, ChangeEvent, FormEvent, useEffect, useState,
 } from 'react';
+import { confirmAlert } from 'react-confirm-alert';
+
 import { Todo } from '../types/TodoItem';
 
 interface Props {
@@ -30,9 +32,24 @@ export default function TodoItem({
   const [newTitle, setNewTitle] = useState(title);
 
   const handleDelete = (selectedId: number) => {
+
     if (handleDeleteTodo) {
-      handleDeleteTodo([selectedId]);
-      setIsLoading(true);
+      confirmAlert({
+        title: 'You remove the todo',
+        message: 'Number of items to be removed:(1)',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => {
+              handleDeleteTodo([selectedId]);
+              setIsLoading(true);
+            },
+          },
+          {
+            label: 'No',
+          },
+        ],
+      });
     }
   };
 

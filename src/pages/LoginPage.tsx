@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+
 import { handleLogin } from '../api/login';
 import { handleRegister } from '../api/register';
-import { toast } from 'react-toastify';
 import useVerification from '../utils/verification';
 
 interface Props {
