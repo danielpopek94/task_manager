@@ -2,16 +2,19 @@
 import React, { useState } from 'react';
 import { handleLogin } from '../api/login';
 import { handleRegister } from '../api/register';
+import { toast } from 'react-toastify';
 
 interface Props {
   handleActiveSession: (value: boolean) => void;
 }
 
 export const LoginPage = ({ handleActiveSession }: Props) => {
-  const [email, setEmail] = useState('admin@gmail.com');
-  const [password, setPassword] = useState('coolpassword');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [repeatedPassword, setRepeatedPassword] = useState('');
   const [errorType, setErrorType] = useState('');
   const [register, setRegister] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -21,9 +24,12 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
         .then((res) => {
           localStorage.setItem('token', res.token);
           handleActiveSession(true);
+          toast.success('Created account successfully');
         })
         .catch((err) => {
           const errorMessage = err.response.data.error;
+
+          toast.error(errorMessage);
 
           console.error(errorMessage);
 
@@ -32,6 +38,8 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
           } else if (errorMessage.includes('password')) {
             setErrorType('password');
           }
+        }).finally(() => {
+          setIsLoading(false);
         });
 
     } else {
@@ -39,17 +47,21 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
         .then((res) => {
           localStorage.setItem('token', res.token);
           handleActiveSession(true);
+          toast.success('Logged in successfully');
         })
         .catch((err) => {
           const errorMessage = err.response.data.error;
 
           console.error(errorMessage);
+          toast.error(errorMessage);
 
           if (errorMessage.includes('email')) {
             setErrorType('email');
           } else if (errorMessage.includes('password')) {
             setErrorType('password');
           }
+        }).finally(() => {
+          setIsLoading(false);
         });
     }
   };
@@ -57,7 +69,8 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
   const handleSwitchFormType = () => {
     setEmail('');
     setPassword('');
-    setRegister(true);
+    setRegister((prev) => !prev);
+    setErrorType('');
   };
 
   return (
@@ -77,6 +90,7 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
                   className="login__input"
                   type="email"
                   name="your-email"
+                  autoComplete="email"
                   placeholder="Email Address"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
@@ -91,6 +105,7 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
                   className="login__input"
                   type="password"
                   name="your-password"
+                  autoComplete="current-password"
                   placeholder="Password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
@@ -99,23 +114,51 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
                 {errorType === 'password'
                   && <p className='login__error-message'>Invalid password!</p>}
               </div>
+              {register
+                && <div className="login__input-container">
+                  <input
+                    className="login__input"
+                    type="password"
+                    name="your-repeated-password"
+                    placeholder="Repeat password"
+                    value={repeatedPassword}
+                    onChange={(event) =>
+                      setRepeatedPassword(event.target.value)
+                    }
+                    required
+                  />
+                  {errorType === 'password'
+                    && <p className='login__error-message'>Invalid password!</p>
+                  }
+                </div>
+              }
+
 
               <div
                 className="loader"
                 style={{
                   margin: '0 auto',
-                  opacity: '0',
+                  opacity: isLoading ? '1' : '0',
                 }}
               />
-              <button className="login__btn" type="submit">
+              <button
+                className="login__btn"
+                type="submit"
+                onClick={() => setIsLoading(true)}
+              >
                 {register ? 'Register' : 'Login'}
               </button>
               <p
                 className="login__text login__text-register"
                 onClick={handleSwitchFormType}
-              >Register</p>
+              >{
+                  register
+                    ? 'Back to Login'
+                    : 'Register'
+                }
+              </p>
               <p className="login__text">
-                Or try this:<br></br>
+                Or try this for testing purposes:<br></br>
                 admin@gmail.com<br></br>
                 coolpassword
               </p>

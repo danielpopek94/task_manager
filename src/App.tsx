@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 import { TodoPage } from './pages/TodoPage';
 import { LoginPage } from './pages/LoginPage';
 import { Header } from './components/Header';
@@ -27,6 +29,7 @@ export const App: React.FC = () => {
           <TodoPage />
         </>
         : <LoginPage handleActiveSession={handleActiveSession} />}
+      <ToastContainer />
     </>
   );
 };
