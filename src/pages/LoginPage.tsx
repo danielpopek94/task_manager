@@ -9,8 +9,8 @@ interface Props {
 }
 
 export const LoginPage = ({ handleActiveSession }: Props) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('admin@gmail.com');
+  const [password, setPassword] = useState('coolpassword');
   const [repeatedPassword, setRepeatedPassword] = useState('');
   const [errorType, setErrorType] = useState('');
   const [register, setRegister] = useState(false);

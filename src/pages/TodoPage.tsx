@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import {
   getTodos, addTodo, deleteTodos, updateTodos,
 } from '../api/todos';
@@ -16,18 +17,24 @@ export const TodoPage = () => {
   const [todosList, setTodosList] = useState<Todo[]>([]);
   const [visibleTodos, setVisibleTodos] = useState<Todo[]>([]);
   const [status, setStatus] = useState<TodoStatus>(TodoStatus.ALL);
-
   const [errorType, setErrorType] = useState<Errors>(Errors.NULL);
-
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleLoadTodos = () => {
+    setIsLoading(true);
+
     getTodos()
       .then(response => {
         setTodosList(response);
         setVisibleTodos(response);
       })
-      .catch(() => setErrorType(Errors.LOAD));
+      .catch(() => {
+        setErrorType(Errors.LOAD);
+        toast.error(Errors.LOAD);
+      }).finally(() => {
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -57,8 +64,12 @@ export const TodoPage = () => {
       addTodo(tempTodo)
         .then(response => {
           setTodosList(prev => [...prev, response]);
+          toast.success('Created new todo');
         })
-        .catch(() => setErrorType(Errors.ADD));
+        .catch(() => {
+          setErrorType(Errors.ADD);
+          toast.error(Errors.ADD);
+        });
     }
   }, [tempTodo]);
 
@@ -66,8 +77,12 @@ export const TodoPage = () => {
     deleteTodos(ids)
       .then(() => {
         setTodosList(prev => prev.filter(todo => !ids.includes(todo.id)));
+        toast.success('Deleted successfully');
       })
-      .catch(() => setErrorType(Errors.DELETE));
+      .catch(() => {
+        setErrorType(Errors.DELETE);
+        toast.error(Errors.DELETE);
+      });
   };
 
   const handleClearCompleted = () => {
@@ -79,8 +94,14 @@ export const TodoPage = () => {
 
   const handleUpdateTodo = (ids: number[], value: Partial<Todo>) => {
     updateTodos(ids, value)
-      .then(() => handleLoadTodos())
-      .catch(() => setErrorType(Errors.UPDATE));
+      .then(() => {
+        handleLoadTodos();
+        toast.success('Updated todo');
+      })
+      .catch(() => {
+        setErrorType(Errors.UPDATE);
+        toast.error(Errors.UPDATE);
+      });
   };
 
   const handleCompleteAll = () => {
@@ -92,8 +113,14 @@ export const TodoPage = () => {
     const currentStatus = activeTodos.length > 0;
 
     updateTodos(ids, { completed: currentStatus })
-      .then(() => handleLoadTodos())
-      .catch(() => setErrorType(Errors.UPDATE));
+      .then(() => {
+        handleLoadTodos();
+        toast.success('Completed all todos');
+      })
+      .catch(() => {
+        setErrorType(Errors.UPDATE);
+        toast.error(Errors.UPDATE);
+      });
   };
 
   const handleFilterTodos = (newStatus: TodoStatus) => {
@@ -129,8 +156,8 @@ export const TodoPage = () => {
             handleAddNewTodo={handleAddNewTodo}
             handleCompleteAll={handleCompleteAll}
           />
-          {todosList.length > 0 && (
-            <>
+          {todosList.length > 0
+            ? <>
               <section className="todoapp__main">
                 <TodosList
                   visibleTodos={visibleTodos}
@@ -147,7 +174,14 @@ export const TodoPage = () => {
                 todosList={todosList}
               />
             </>
-          )}
+            : <div
+              className="loader"
+              style={{
+                margin: '0 auto',
+                opacity: isLoading ? '1' : '0',
+              }}
+            />
+          }
         </div>
         {
           errorType
