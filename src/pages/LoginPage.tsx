@@ -3,10 +3,13 @@ import React, { useState } from 'react';
 import { handleLogin } from '../api/login';
 import { handleRegister } from '../api/register';
 import { toast } from 'react-toastify';
+import useVerification from '../utils/verification';
 
 interface Props {
   handleActiveSession: (value: boolean) => void;
 }
+
+
 
 export const LoginPage = ({ handleActiveSession }: Props) => {
   const [email, setEmail] = useState('admin@gmail.com');
@@ -15,11 +18,23 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
   const [errorType, setErrorType] = useState('');
   const [register, setRegister] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const verification = useVerification();
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (register) {
+      const isStrongPassword = verification.password(password);
+
+      if (!isStrongPassword) {
+        toast.error('Too weak password');
+        setErrorType('weak-password');
+
+        return;
+      }
+
+      setIsLoading(true);
+
       handleRegister(email, password)
         .then((res) => {
           localStorage.setItem('token', res.token);
@@ -30,7 +45,6 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
           const errorMessage = err.response.data.error;
 
           toast.error(errorMessage);
-
           console.error(errorMessage);
 
           if (errorMessage.includes('email')) {
@@ -69,8 +83,10 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
   const handleSwitchFormType = () => {
     setEmail('');
     setPassword('');
-    setRegister((prev) => !prev);
+    setRepeatedPassword('');
     setErrorType('');
+    setRegister((prev) => !prev);
+
   };
 
   return (
@@ -113,6 +129,12 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
                 />
                 {errorType === 'password'
                   && <p className='login__error-message'>Invalid password!</p>}
+                {errorType === 'weak-password'
+                  && <p className='login__error-message'>
+                    Minimum 8 characters,
+                    at least 1 letter,
+                    1 number and 1 special character
+                  </p>}
               </div>
               {register
                 && <div className="login__input-container">
@@ -144,7 +166,6 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
               <button
                 className="login__btn"
                 type="submit"
-                onClick={() => setIsLoading(true)}
               >
                 {register ? 'Register' : 'Login'}
               </button>
