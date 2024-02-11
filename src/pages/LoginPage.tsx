@@ -20,6 +20,7 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
 
   const handleSubmitForm = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
 
     if (register) {
       const isStrongPassword = verification.password(password);
@@ -27,11 +28,12 @@ export const LoginPage = ({ handleActiveSession }: Props) => {
       if (!isStrongPassword) {
         toast.error('Too weak password');
         setErrorType('weak-password');
+        setIsLoading(false);
 
         return;
       }
 
-      setIsLoading(true);
+
 
       handleRegister(email, password)
         .then((res) => {
