@@ -29,7 +29,7 @@ function request<T>(
   return wait(0)
     .then(() => fetch(BASE_URL + url, options))
     .then((response) => {
-      if (response.status === 403) {
+      if (response.status === 403 || response.status === 404) {
         localStorage.clear();
         window.location.reload();
       } else if (!response.ok) {
